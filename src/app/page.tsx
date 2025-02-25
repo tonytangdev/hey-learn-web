@@ -7,8 +7,28 @@ import { Input } from "@/components/ui/input"
 import { ArrowRight, BookOpen, FileText, Type, Brain, Lightbulb, Target, Timer } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useState } from "react"
 
 export default function Home() {
+  const [text, setText] = useState("")
+
+  const onGenerateQuiz = () => {
+    console.log({ api: process.env.NEXT_PUBLIC_API_URL })
+    console.log({ text })
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/quiz/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ textInput: text, userId: "user_28785fc7-d81d-4775-82ae-440e8434b59e", organizationId: 'org_8b6e8779-adde-4ee0-81c9-4d6d0deb23f2' }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+      })
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <NavBar />
@@ -49,9 +69,11 @@ export default function Home() {
                     <Textarea
                       placeholder="Paste your study material, article, or any text you want to learn from..."
                       className="min-h-[200px] text-lg"
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
                     />
                     <div className="flex justify-end">
-                      <Button size="lg" className="group">
+                      <Button onClick={onGenerateQuiz} size="lg" className="group">
                         Generate Quiz
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </Button>
