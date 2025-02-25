@@ -1,20 +1,23 @@
 "use server";
 
+import { axiosClient } from "@/lib/http";
+
 export async function generateQuiz(params: {
   textInput: string;
   userId: string;
   organizationId: string;
 }) {
-  const res = await fetch(`${process.env.API_URL}/quiz/generate`, {
-    method: "POST",
+  const { data, status } = await axiosClient.post<{
+    message: string;
+  }>("/quiz/generate", params, {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(params),
   });
 
-  const data = (await res.json()) as {
-    message: string;
-  };
+  if (status !== 200) {
+    throw new Error("Failed to generate quiz");
+  }
+
   return data;
 }
