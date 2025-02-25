@@ -1,4 +1,4 @@
-import { NavBar } from "@/components/nav-bar"
+import { NavBar } from "@/app/_components/nav-bar"
 
 export default function QuizPage() {
   return (
