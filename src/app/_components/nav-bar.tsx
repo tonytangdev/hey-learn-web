@@ -1,12 +1,12 @@
 import { Brain } from "lucide-react"
 import {
   SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
 } from '@clerk/nextjs'
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function NavBar() {
   return (
@@ -25,6 +25,9 @@ export function NavBar() {
             </SignInButton>
           </SignedOut>
           <SignedIn>
+            <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
+              Dashboard
+            </Link>
             <UserButton />
           </SignedIn>
         </div>
