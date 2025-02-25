@@ -1,5 +1,11 @@
-import Link from "next/link"
 import { Brain } from "lucide-react"
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 import { Button } from "@/components/ui/button"
 
 export function NavBar() {
@@ -11,12 +17,16 @@ export function NavBar() {
           <span className="text-xl font-semibold">QuizGenius</span>
         </div>
         <div className="flex items-center space-x-4">
-          <Link href="/quiz" className="text-sm font-medium hover:text-primary transition-colors">
-            My Quizzes
-          </Link>
-          <Button variant="default" size="sm">
-            Get Started
-          </Button>
+          <SignedOut>
+            <SignInButton>
+              <Button variant="default" size="sm">
+                Sign In
+              </Button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
       </nav>
     </header>
