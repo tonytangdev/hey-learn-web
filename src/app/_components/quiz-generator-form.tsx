@@ -5,22 +5,17 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { ArrowRight, BookOpen, FileText, Type } from "lucide-react"
 import { useState } from "react"
+import { generateQuiz } from "../_actions/generate-quiz"
 
 export const QuizGeneratorForm = () => {
   const [text, setText] = useState("")
 
-  const onGenerateQuiz = () => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/quiz/generate`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ textInput: text, userId: "user_28785fc7-d81d-4775-82ae-440e8434b59e", organizationId: 'org_8b6e8779-adde-4ee0-81c9-4d6d0deb23f2' }),
+  const onGenerateQuiz = async () => {
+    await generateQuiz({
+      textInput: text,
+      userId: "user_28785fc7-d81d-4775-82ae-440e8434b59e",
+      organizationId: 'org_8b6e8779-adde-4ee0-81c9-4d6d0deb23f2'
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data)
-      })
   }
 
   return (
