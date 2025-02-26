@@ -15,7 +15,7 @@ export async function generateQuiz(params: {
     },
   });
 
-  if (status !== 202) {
+  if (status !== 201) {
     throw new Error("Failed to generate quiz");
   }
 
