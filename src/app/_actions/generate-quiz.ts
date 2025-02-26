@@ -1,12 +1,16 @@
 "use server";
 
 import { axiosClient } from "@/lib/http";
+import { auth } from "@clerk/nextjs/server";
 
-export async function generateQuiz(params: {
-  textInput: string;
-  userId: string;
-  organizationId: string;
-}) {
+export async function generateQuiz(text: string) {
+  const { userId } = await auth();
+
+  const params = {
+    TextInput: text,
+    userId: userId,
+  };
+
   const { data, status } = await axiosClient.post<{
     message: string;
   }>("/quiz/generate", params, {

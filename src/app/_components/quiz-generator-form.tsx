@@ -21,11 +21,7 @@ export const QuizGeneratorForm = () => {
 
   const onGenerateQuiz = async () => {
     setIsLoading(true)
-    await generateQuiz({
-      textInput: text,
-      userId: 'user_28785fc7-d81d-4775-82ae-440e8434b59e',
-      organizationId: 'org_8b6e8779-adde-4ee0-81c9-4d6d0deb23f2'
-    })
+    await generateQuiz(text)
     setIsLoading(false)
   }
 
@@ -37,10 +33,16 @@ export const QuizGeneratorForm = () => {
             <Type className="h-4 w-4" />
             Paste Text
           </TabsTrigger>
-          <TabsTrigger value="file" className="flex items-center gap-2">
+          <div
+            className="flex items-center justify-center gap-2 h-full text-sm font-medium text-muted-foreground bg-muted/40 rounded-md cursor-not-allowed relative group"
+            aria-disabled="true"
+          >
             <FileText className="h-4 w-4" />
             Upload File
-          </TabsTrigger>
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-1 bg-black/80 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
+              Coming soon!
+            </div>
+          </div>
         </TabsList>
 
         <div className="rounded-xl border bg-background/60 p-4 backdrop-blur-sm">
