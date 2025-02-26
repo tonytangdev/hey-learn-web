@@ -1,21 +1,32 @@
 "use client"
-import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
-import { ArrowRight, BookOpen, FileText, Type } from "lucide-react"
+import { BookOpen, FileText, Type } from "lucide-react"
 import { useState } from "react"
 import { generateQuiz } from "../_actions/generate-quiz"
+import { formatNumber } from "@/lib/numbers"
+import { GenerateButton } from "./generate-button"
+
+const MAX_CHARACTERS = 50000
 
 export const QuizGeneratorForm = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const [text, setText] = useState("")
 
+  const charCount = text.length
+  const remaining = MAX_CHARACTERS - charCount
+  const isWarning = remaining < 1000
+  const isDanger = remaining < 100
+
   const onGenerateQuiz = async () => {
+    setIsLoading(true)
     await generateQuiz({
       textInput: text,
-      userId: "user_28785fc7-d81d-4775-82ae-440e8434b59e",
+      userId: 'user_28785fc7-d81d-4775-82ae-440e8434b59e',
       organizationId: 'org_8b6e8779-adde-4ee0-81c9-4d6d0deb23f2'
     })
+    setIsLoading(false)
   }
 
   return (
@@ -38,13 +49,17 @@ export const QuizGeneratorForm = () => {
               placeholder="Paste your study material, article, or any text you want to learn from..."
               className="min-h-[200px] text-lg"
               value={text}
+              maxLength={MAX_CHARACTERS}
               onChange={(e) => setText(e.target.value)}
             />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span className={`${isWarning ? (isDanger ? "text-red-500" : "text-amber-500") : ""}`}>
+                {formatNumber(charCount)}/{formatNumber(MAX_CHARACTERS)} characters
+              </span>
+              <span>Maximum {formatNumber(MAX_CHARACTERS)} characters</span>
+            </div>
             <div className="flex justify-end">
-              <Button onClick={onGenerateQuiz} size="lg" className="group">
-                Generate Quiz
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
+              <GenerateButton isLoading={isLoading} onClick={onGenerateQuiz} />
             </div>
           </TabsContent>
 
@@ -58,14 +73,11 @@ export const QuizGeneratorForm = () => {
               <Input type="file" accept=".txt,.doc,.docx,.pdf" className="cursor-pointer mt-4" />
             </div>
             <div className="flex justify-end">
-              <Button size="lg" className="group">
-                Generate Quiz
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
+              <GenerateButton isLoading={isLoading} onClick={onGenerateQuiz} />
             </div>
           </TabsContent>
         </div>
-      </Tabs>
-    </div>
+      </Tabs >
+    </div >
   )
 }
