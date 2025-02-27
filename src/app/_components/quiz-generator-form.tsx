@@ -20,9 +20,14 @@ export const QuizGeneratorForm = () => {
   const isDanger = remaining < 100
 
   const onGenerateQuiz = async () => {
-    setIsLoading(true)
-    await generateQuiz(text)
-    setIsLoading(false)
+    try {
+      setIsLoading(true)
+      await generateQuiz(text)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (

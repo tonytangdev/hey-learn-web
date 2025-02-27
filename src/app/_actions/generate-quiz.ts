@@ -7,7 +7,7 @@ export async function generateQuiz(text: string) {
   const { userId } = await auth();
 
   const params = {
-    TextInput: text,
+    textInput: text,
     userId: userId,
   };
 
